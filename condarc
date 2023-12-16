@@ -1,0 +1,12 @@
+auto_activate_base: false
+channels:
+  - gurobi
+  - pytorch
+  - nvidia
+  - fastai
+  - conda-forge
+  - blazingsql
+  - intel
+  - menpo
+  - defaults
+  - bioconda
