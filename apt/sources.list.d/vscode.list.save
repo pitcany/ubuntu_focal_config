@@ -1,0 +1,4 @@
+
+deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main
+
+# aptik-desc: code linuxconfig code-insiders code-exploration

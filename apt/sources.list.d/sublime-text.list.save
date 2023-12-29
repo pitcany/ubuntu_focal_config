@@ -1,0 +1,3 @@
+deb https://download.sublimetext.com/ apt/stable/
+
+# aptik-desc: sublime-text sublime-merge

@@ -1,0 +1,6 @@
+deb http://neurodeb.pirsquared.org data main contrib non-free
+# deb-src http://neurodeb.pirsquared.org data main contrib non-free
+deb http://neurodeb.pirsquared.org focal main contrib non-free
+# deb-src http://neurodeb.pirsquared.org focal main contrib non-free
+
+# aptik-desc: 
