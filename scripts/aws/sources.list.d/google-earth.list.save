@@ -1,0 +1,3 @@
+deb [arch=amd64] http://dl.google.com/linux/earth/deb/ stable main
+
+# aptik-desc: google-earth-ec-stable google-earth-pro-stable
