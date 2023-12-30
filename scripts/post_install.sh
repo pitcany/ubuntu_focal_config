@@ -16,6 +16,8 @@ echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-$(lsb_release -cs)-16 main" 
 #echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
 echo "deb https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list.d/sublimetext.list
 
+# anaconda repo
+
 # Install our public GPG key to trusted store
 curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
 install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg
@@ -29,6 +31,8 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] h
 #**NB:** If you receive a Permission denied error when trying to run the above command (because `/etc/apt/sources.list.d/conda.list` is write protected), try using the following command instead:
 #echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
 
+# scala sbt
+
 echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
 echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
 curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
@@ -41,9 +45,9 @@ add-apt-repository -y ppa:kelleyk/emacs
 add-apt-repository -y ppa:libreoffice/ppa
 #add-apt-repository -y ppa:linrunner/tlp
 add-apt-repository -y ppa:linuxuprising/java
-add-apt-repository ppa:shutter/ppa
+add-apt-repository -y ppa:shutter/ppa
 #add-apt-repository -y ppa:linuxuprising/shutter
-add-apt-repository ppa:linuxuprising/apps
+add-apt-repository -y ppa:linuxuprising/apps
 add-apt-repository -y ppa:lyx-devel/release
 #add-apt-repository -y ppa:nilarimogard/webupd8
 apt-apt-repository -y ppa:openjdk-r/ppa
@@ -56,13 +60,21 @@ add-apt-repository -y ppa:ubuntu-mozilla-daily/ppa
 #add-apt-repository -y ppa:ubuntuhandbook1/apps
 #add-apt-repository -y ppa:uget-team/ppa
 #add-apt-repository -y ppa:webupd8team/y-ppa-manager
+add-apt-repository -y ppa:graphics-drivers/ppa
+
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+sudo dpkg -i cuda-keyring_1.1-1_all.deb
 
 echo "updating repositories"
+
 apt-get update
 
 echo "Installing packages"
 
-apt-get install git texstudio timeshift lyx r-base r-recommended elpa-ess r-doc-html oracle-java17-installer terminator
+apt-get -y install git texstudio python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
+apt-get -y install ubuntu-drivers-common
+
+sudo apt-get -y install cuda
 
 echo "Finished adding PPAs and installing applications"
 exit 0
