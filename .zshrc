@@ -131,6 +131,5 @@ export INFOPATH=$INFOPATH:/usr/local/texlive/2023/texmf-dist/doc/info
 export PS1="%1~ %# "
 export EDITOR=nano
 
-export OPENAI_API_KEY=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
 source "${HOME}/start_miniconda.sh"
 source "${HOME}/start_mamba.sh"
