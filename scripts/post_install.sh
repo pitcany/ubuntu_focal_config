@@ -14,6 +14,8 @@ echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-$(lsb_release -cs) main" >> 
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-$(lsb_release -cs)-16 main" >> /etc/apt/sources.list.d/llvm.list
 
 #echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
+
+wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
 echo "deb https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list.d/sublimetext.list
 
 # anaconda repo
@@ -36,7 +38,7 @@ echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] h
 echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
 echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
 curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
-sudo chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
+chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
 add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+
 add-apt-repository -y ppa:git-core/ppa
@@ -65,6 +67,11 @@ add-apt-repository -y ppa:graphics-drivers/ppa
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 sudo dpkg -i cuda-keyring_1.1-1_all.deb
 
+# julia install
+#wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.0-linux-x86_64.tar.gz
+#tar zxvf julia-1.10.0-linux-x86_64.tar.gz
+curl -fsSL https://install.julialang.org | sh
+
 echo "updating repositories"
 
 apt-get update
@@ -74,7 +81,7 @@ echo "Installing packages"
 apt-get -y install git texstudio python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
 apt-get -y install ubuntu-drivers-common
 
-sudo apt-get -y install cuda
+apt-get -y install cuda
 
 echo "Finished adding PPAs and installing applications"
 exit 0
