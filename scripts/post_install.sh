@@ -27,7 +27,7 @@ echo "deb https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list
 # Install our public GPG key to trusted store
 curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
 install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg
-
+rm conda.gpg
 # Check whether fingerprint is correct (will output an error message otherwise)
 gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
 
@@ -69,7 +69,8 @@ add-apt-repository -y ppa:ubuntu-mozilla-daily/ppa
 add-apt-repository -y ppa:graphics-drivers/ppa
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
-sudo dpkg -i cuda-keyring_1.1-1_all.deb
+dpkg -i cuda-keyring_1.1-1_all.deb
+rm cuda-keyring_1.1-1_all.deb
 
 # julia install
 #wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.0-linux-x86_64.tar.gz
@@ -96,6 +97,7 @@ apt-get -y install ubuntu-drivers-common
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
 wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
+wget https://huggingface.co/jartine/WizardCoder-Python-34B-V1.0-llamafile/resolve/main/wizardcoder-python-34b-v1.0.Q4_K_M.llamafile?download=true -O WizardCoder-Python-34b-V1.Q4_K_M.llamafile
 source /opt/conda/etc/profile.d/conda.sh
 
 echo "Finished adding PPAs and installing applications"
