@@ -5,8 +5,12 @@ apt-get install apt-transport-https curl gnupg -yqq
 apt-get install --no-install-recommends software-properties-common dirmngr
 #apt-get install software-properties-common dirmngr
 wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee -a /etc/apt/trusted.gpg.d/postgresql.asc
 
 echo "Adding PPAs"
+
+# Create the file repository configuration:
+echo "deb https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 echo "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
 
@@ -85,12 +89,13 @@ apt install -f
 rm rstudio.deb
 
 apt-get -y install git texstudio conda python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
-apt-get -y install ubuntu-drivers-common
+apt-get -y install ubuntu-drivers-common postgresql
 apt-get -y install p7zip-full build-essential
 
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
 wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
+source /opt/conda/etc/profile.d/conda.sh
 
 echo "Finished adding PPAs and installing applications"
 exit 0
