@@ -90,5 +90,7 @@ apt-get -y install p7zip-full build-essential
 
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
+wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
+
 echo "Finished adding PPAs and installing applications"
 exit 0
