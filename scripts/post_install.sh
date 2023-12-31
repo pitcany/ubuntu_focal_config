@@ -8,10 +8,10 @@ wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sud
 
 echo "Adding PPAs"
 
-echo "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" > /etc/apt/sources.list.d/cran.list
+echo "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
 
-echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-$(lsb_release -cs) main" >> /etc/apt/sources.list.d/llvm.list
-echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-$(lsb_release -cs)-16 main" >> /etc/apt/sources.list.d/llvm.list
+echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" >> /etc/apt/sources.list.d/llvm.list
+echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" >> /etc/apt/sources.list.d/llvm.list
 
 #echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
 
@@ -78,10 +78,17 @@ apt-get update
 
 echo "Installing packages"
 
-apt-get -y install git texstudio python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
-apt-get -y install ubuntu-drivers-common
+echo "Installing RStudio..."
+wget -qO- https://download1.rstudio.org/electron/jammy/amd64/rstudio-2023.12.0-369-amd64.deb > rstudio.deb
+dpkg -i rstudio.deb
+apt install -f
+rm rstudio.deb
 
-apt-get -y install cuda
+apt-get -y install git texstudio conda python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
+apt-get -y install ubuntu-drivers-common
+apt-get -y install p7zip-full build-essential
+
+apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
 echo "Finished adding PPAs and installing applications"
 exit 0
