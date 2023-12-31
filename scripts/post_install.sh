@@ -26,13 +26,13 @@ echo "deb https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list
 
 # Install our public GPG key to trusted store
 curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
-install -o root -g root -m 644 conda.gpg /usr/share/keyrings/conda-archive-keyring.gpg
+install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg
 
 # Check whether fingerprint is correct (will output an error message otherwise)
-gpg --keyring /usr/share/keyrings/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
+gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
 
 # Add our Debian repo
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" > /etc/apt/sources.list.d/conda.list
+echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" > /etc/apt/sources.list.d/conda.list
 
 #**NB:** If you receive a Permission denied error when trying to run the above command (because `/etc/apt/sources.list.d/conda.list` is write protected), try using the following command instead:
 #echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
@@ -88,10 +88,11 @@ dpkg -i rstudio.deb
 apt install -f
 rm rstudio.deb
 
-apt-get -y install git texstudio conda python3 python3-pip lyx r-base r-base-dev r-recommended elpa-ess r-doc-html terminator openjdk-17-jdk wget vim #timeshift oracle-java17-installer
-apt-get -y install ubuntu-drivers-common postgresql
-apt-get -y install p7zip-full build-essential
-
+apt-get -y install git texstudio conda python3 python3-pip lyx p7zip-full build-essential
+apt-get -y install r-base r-base-dev r-recommended elpa-ess r-doc-html 
+apt-get -y install terminator openjdk-17-jdk wget vim sublime-text postgresql
+#apt-get -y install timeshift oracle-java17-installer
+apt-get -y install ubuntu-drivers-common
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
 wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
