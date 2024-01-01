@@ -108,16 +108,23 @@ apt install -f
 rm rstudio.deb
 
 apt-get -y install nvhpc-23-11
-apt-get -y install git texstudio conda python3 python3-pip lyx p7zip-full build-essential
+apt-get -y install git texstudio conda python3 python3-pip lyx p7zip-full emacs build-essential
 apt-get -y install r-base r-base-dev r-recommended elpa-ess r-doc-html libboost-all-dev
 apt-get -y install terminator openjdk-17-jdk wget vim sublime-text postgresql
 #apt-get -y install timeshift oracle-java17-installer ubuntu-drivers-common nvidia-kernel-open-545 cuda-drivers-545
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
+apt-get upgrade
+# for libreoffice upgrade
+
 #wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
 wget https://huggingface.co/jartine/WizardCoder-Python-34B-V1.0-llamafile/resolve/main/wizardcoder-python-34b-v1.0.Q4_K_M.llamafile?download=true -O WizardCoder-Python-34b-V1.Q4_K_M.llamafile
 wget https://huggingface.co/jartine/dolphin-2.5-mixtral-8x7b-llamafile/resolve/main/dolphin-2.5-mixtral-8x7b.Q4_K_M.llamafile?download=true -O dolphin-2.5-mixtral-8x7b.Q4_K_M.llamafile
 source /opt/conda/etc/profile.d/conda.sh
+
+#add cuda to path and library path
+echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ${HOME}/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ${HOME}/.bashrc
 
 # Cleaning Up
 echo "Cleaning up..."
