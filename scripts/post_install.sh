@@ -35,7 +35,7 @@ gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyr
 echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" > /etc/apt/sources.list.d/conda.list
 
 #**NB:** If you receive a Permission denied error when trying to run the above command (because `/etc/apt/sources.list.d/conda.list` is write protected), try using the following command instead:
-#echo "deb [arch=amd64 signed-by=/usr/share/keyrings/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
+#echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
 
 # scala sbt
 
@@ -77,8 +77,10 @@ rm cuda-keyring_1.1-1_all.deb
 #tar zxvf julia-1.10.0-linux-x86_64.tar.gz
 curl -fsSL https://install.julialang.org | sh
 
-echo "updating repositories"
+curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg
+echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
 
+echo "updating repositories"
 apt-get update
 
 echo "Installing packages"
@@ -89,16 +91,21 @@ dpkg -i rstudio.deb
 apt install -f
 rm rstudio.deb
 
+apt-get -y install nvhpc-23-11
 apt-get -y install git texstudio conda python3 python3-pip lyx p7zip-full build-essential
-apt-get -y install r-base r-base-dev r-recommended elpa-ess r-doc-html 
+apt-get -y install r-base r-base-dev r-recommended elpa-ess r-doc-html libboost-all-dev
 apt-get -y install terminator openjdk-17-jdk wget vim sublime-text postgresql
-#apt-get -y install timeshift oracle-java17-installer
-apt-get -y install ubuntu-drivers-common
+#apt-get -y install timeshift oracle-java17-installer ubuntu-drivers-common nvidia-kernel-open-545 cuda-drivers-545
 apt-get -y install cuda-toolkit-12-3 cuda-drivers
 
-wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
+#wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
 wget https://huggingface.co/jartine/WizardCoder-Python-34B-V1.0-llamafile/resolve/main/wizardcoder-python-34b-v1.0.Q4_K_M.llamafile?download=true -O WizardCoder-Python-34b-V1.Q4_K_M.llamafile
+wget https://huggingface.co/jartine/dolphin-2.5-mixtral-8x7b-llamafile/resolve/main/dolphin-2.5-mixtral-8x7b.Q4_K_M.llamafile?download=true -O dolphin-2.5-mixtral-8x7b.Q4_K_M.llamafile
 source /opt/conda/etc/profile.d/conda.sh
 
+# Cleaning Up
+echo "Cleaning up..."
+apt-get -y autoremove
+apt-get -y autoclean
 echo "Finished adding PPAs and installing applications"
 exit 0
