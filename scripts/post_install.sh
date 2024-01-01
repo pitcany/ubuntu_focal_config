@@ -77,11 +77,27 @@ rm cuda-keyring_1.1-1_all.deb
 #tar zxvf julia-1.10.0-linux-x86_64.tar.gz
 curl -fsSL https://install.julialang.org | sh
 
-curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg
-echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
+curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | gpg --dearmor -o /etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg
+echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | tee /etc/apt/sources.list.d/nvhpc.list
 
 echo "updating repositories"
-apt-get update
+
+#first find missing keys and add them to trusted keys
+apt-get update 2> /tmp/keymissing
+if [ -f /tmp/keymissing ]
+then
+    for key in $(grep "NO_PUBKEY" /tmp/keymissing |sed "s/.*NO_PUBKEY //")
+        do 
+        echo -e "\nProcessing key: $key"
+        #sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $key
+        gpg --keyserver keyserver.ubuntu.com --recv-keys $key
+        gpg --export $key | tee /etc/apt/trusted.gpg.d/${key}.gpg >/dev/null
+        apt-get update
+    done
+    rm /tmp/keymissing
+fi
+
+#apt-get update
 
 echo "Installing packages"
 
