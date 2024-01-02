@@ -36,13 +36,15 @@ gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyr
 echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" > /etc/apt/sources.list.d/conda.list
 
 #**NB:** If you receive a Permission denied error when trying to run the above command (because `/etc/apt/sources.list.d/conda.list` is write protected), try using the following command instead:
-#echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | tee -a /etc/apt/sources.list.d/conda.list
+#echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" | sudo tee -a /etc/apt/sources.list.d/conda.list
 
 #scala sbt
 
 echo "deb https://repo.scala-sbt.org/scalasbt/debian all main" | sudo tee /etc/apt/sources.list.d/sbt.list
 echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sources.list.d/sbt_old.list
-curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
+#curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
+#chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
+wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/scalasbt-release.gpg > /dev/null
 chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
 add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+
@@ -79,7 +81,7 @@ rm cuda-keyring_1.1-1_all.deb
 curl -fsSL https://install.julialang.org | sh
 
 curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | gpg --dearmor -o /etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg
-echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | tee /etc/apt/sources.list.d/nvhpc.list
+echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
 
 echo "updating repositories"
 
@@ -92,7 +94,7 @@ then
         echo -e "\nProcessing key: $key"
         #apt-key adv --keyserver keyserver.ubuntu.com --recv-keys $key
         gpg --keyserver keyserver.ubuntu.com --recv-keys $key
-        gpg --export $key | tee /etc/apt/trusted.gpg.d/${key}.gpg >/dev/null
+        gpg --export $key | sudo tee /etc/apt/trusted.gpg.d/${key}.gpg >/dev/null
         apt-get update
     done
     rm /tmp/keymissing
@@ -114,7 +116,7 @@ apt-get -y install git texstudio conda python3 python3-pip lyx p7zip-full build-
 apt-get -y install r-base r-base-dev r-recommended emacs28 elpa-ess r-doc-html libboost-all-dev
 apt-get -y install terminator openjdk-17-jdk wget nano vim sublime-text postgresql
 #apt-get -y install timeshift oracle-java17-installer ubuntu-drivers-common nvidia-kernel-open-545 cuda-drivers-545
-#apt-get -y install cuda-toolkit-12-3 cuda-drivers
+apt-get -y install cuda-toolkit-12-3 cuda-drivers cuda
 
 #wget https://huggingface.co/jartine/Mixtral-8x7B-v0.1.llamafile/resolve/main/mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile\?download\=true -O mixtral-8x7b-instruct-v0.1.Q5_K_M-server.llamafile
 #wget https://huggingface.co/jartine/WizardCoder-Python-34B-V1.0-llamafile/resolve/main/wizardcoder-python-34b-v1.0.Q4_K_M.llamafile?download=true -O WizardCoder-Python-34b-V1.Q4_K_M.llamafile
@@ -122,8 +124,8 @@ apt-get -y install terminator openjdk-17-jdk wget nano vim sublime-text postgres
 #source /opt/conda/etc/profile.d/conda.sh
 
 #add cuda to path and library path
-#echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ${HOME}/.bashrc
-#echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ${HOME}/.bashrc
+echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ${HOME}/.bashrc
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ${HOME}/.bashrc
 
 #Cleaning Up
 echo "Cleaning up..."
