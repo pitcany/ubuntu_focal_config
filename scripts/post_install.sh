@@ -15,7 +15,7 @@ echo "deb https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/s
 
 echo "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
 
-echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" >> /etc/apt/sources.list.d/llvm.list
+echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" > /etc/apt/sources.list.d/llvm.list
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" >> /etc/apt/sources.list.d/llvm.list
 
 #echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
@@ -124,8 +124,16 @@ apt-get -y install cuda-toolkit-12-3 cuda-drivers cuda
 #source /opt/conda/etc/profile.d/conda.sh
 
 #add cuda to path and library path
-echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ${HOME}/.bashrc
-echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ${HOME}/.bashrc
+if ! grep -q "export PATH=/usr/local/cuda/bin\${PATH:+:\${PATH}}" "${HOME}/.bashrc"; then
+    echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> "${HOME}/.bashrc"
+fi
+
+if ! grep -q "export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}" "${HOME}/.bashrc"; then
+    echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> "${HOME}/.bashrc"
+fi
+
+#echo 'export PATH=/usr/local/cuda/bin${PATH:+:${PATH}}' >> ${HOME}/.bashrc
+#echo 'export LD_LIBRARY_PATH=/usr/local/cuda-12.3/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}' >> ${HOME}/.bashrc
 
 #Cleaning Up
 echo "Cleaning up..."
