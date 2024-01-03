@@ -59,7 +59,7 @@ add-apt-repository -y ppa:shutter/ppa
 add-apt-repository -y ppa:linuxuprising/apps
 add-apt-repository -y ppa:lyx-devel/release
 #add-apt-repository -y ppa:nilarimogard/webupd8
-apt-apt-repository -y ppa:openjdk-r/ppa
+add-apt-repository -y ppa:openjdk-r/ppa
 add-apt-repository -y ppa:otto-kesselgulasch/gimp
 add-apt-repository -y ppa:qbittorrent-team/qbittorrent-stable
 #add-apt-repository -y ppa:stebbins/handbrake-releases
@@ -70,6 +70,7 @@ add-apt-repository -y ppa:ubuntu-mozilla-daily/ppa
 #add-apt-repository -y ppa:uget-team/ppa
 #add-apt-repository -y ppa:webupd8team/y-ppa-manager
 add-apt-repository -y ppa:graphics-drivers/ppa
+add-apt-repository ppa:ubuntuhandbook1/octave
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
