@@ -7,7 +7,8 @@ apt-get install apt-transport-https curl gnupg -yqq
 apt-get install software-properties-common dirmngr -y
 wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
 wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee -a /etc/apt/trusted.gpg.d/postgresql.asc
-
+wget -qO - https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
+wget -qO - https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
 echo "Adding PPAs"
 
 #Create the file repository configuration:
@@ -47,6 +48,8 @@ echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sour
 wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/scalasbt-release.gpg > /dev/null
 chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
+add-apt-repository -y 'deb [signed-by=/etc/apt/trusted.gpg.d/azul.gpg] https://repos.azul.com/zulu/deb stable main'
+add-apt-repository -y 'deb [arch=amd64] https://apt.getarchitect.io/jammy/ jammy main'
 add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+
 add-apt-repository -y ppa:git-core/ppa
 #add-apt-repository -y ppa:kdenlive/kdenlive
