@@ -5,16 +5,16 @@ apt-get install apt-transport-https curl gnupg -yqq
 #apt-get install apt-transport-https curl gnupg -y
 #apt-get install --no-install-recommends software-properties-common dirmngr -y
 apt-get install software-properties-common dirmngr -y
-wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
-wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee -a /etc/apt/trusted.gpg.d/postgresql.asc
+wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
+wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/postgresql.asc
 wget -qO - https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
 wget -qO - https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
 echo "Adding PPAs"
 
 #Create the file repository configuration:
-echo "deb https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+echo "deb [signed-by=/etc/apt/trusted.gpg.d/postgresql.asc] https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
-echo "deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
+echo "deb [signed-by=/etc/apt/trusted.gpg.d/cran_ubuntu_key.asc] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
 
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" > /etc/apt/sources.list.d/llvm.list
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" >> /etc/apt/sources.list.d/llvm.list
@@ -22,14 +22,15 @@ echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" >> /etc/apt/s
 #echo "deb https://dl.bintray.com/sbt/debian /" > /etc/apt/sources.list.d/sbt.list
 
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/sublimehq-archive.gpg > /dev/null
-echo "deb https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list.d/sublimetext.list
+echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/sublimehq-archive.gpg] https://download.sublimetext.com/ apt/stable/" > /etc/apt/sources.list.d/sublimetext.list
 
 #anaconda repo
 
 #Install our public GPG key to trusted store
-curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
-install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg
-rm conda.gpg
+wget -qO - https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg > /dev/null
+#curl https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dearmor > conda.gpg
+#install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg
+#rm conda.gpg
 #Check whether fingerprint is correct (will output an error message otherwise)
 gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
 
