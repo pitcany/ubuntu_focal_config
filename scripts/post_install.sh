@@ -8,7 +8,11 @@ apt-get install software-properties-common dirmngr -y
 wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
 wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/postgresql.asc
 wget -qO - https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
-wget -qO - https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
+#for azul
+#wget -qO - https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
+gpg --keyserver keyserver.ubuntu.com --recv-keys B1998361219BD9C9
+gpg --export B1998361219BD9C9 | sudo tee /etc/apt/trusted.gpg.d/azul.gpg >/dev/null
+
 echo "Adding PPAs"
 
 #Create the file repository configuration:
@@ -50,7 +54,7 @@ wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A
 chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
 add-apt-repository -y 'deb [signed-by=/etc/apt/trusted.gpg.d/azul.gpg] https://repos.azul.com/zulu/deb stable main'
-add-apt-repository -y 'deb [arch=amd64] https://apt.getarchitect.io/jammy/ jammy main'
+add-apt-repository -y 'deb [arch=amd64] https://apt.getarchitect.io/jammy-snapshot/ jammy main'
 add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+
 add-apt-repository -y ppa:git-core/ppa
 #add-apt-repository -y ppa:kdenlive/kdenlive
@@ -74,7 +78,7 @@ add-apt-repository -y ppa:ubuntu-mozilla-daily/ppa
 #add-apt-repository -y ppa:uget-team/ppa
 #add-apt-repository -y ppa:webupd8team/y-ppa-manager
 add-apt-repository -y ppa:graphics-drivers/ppa
-add-apt-repository ppa:ubuntuhandbook1/octave
+add-apt-repository -y ppa:ubuntuhandbook1/octave
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
