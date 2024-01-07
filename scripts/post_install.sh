@@ -7,11 +7,17 @@ apt-get install apt-transport-https curl gnupg -yqq
 apt-get install software-properties-common dirmngr -y
 wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
 wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt/trusted.gpg.d/postgresql.asc
-wget -qO - https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
+curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft-edge.gpg > /dev/null
+#gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
+#gpg --export EB3E94ADBE1229CF | sudo tee /etc/apt/trusted.gpg.d/microsoft-edge.gpg
+#curl -fSsL https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
+# not sure why this is ad-hoc but it works
+gpg --keyserver keyserver.ubuntu.com --recv-keys CA0B221CB174E585
+gpg --export CA0B221CB174E585 | sudo tee /etc/apt/trusted.gpg.d/architect.gpg >/dev/null
 #for azul
-#wget -qO - https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
-gpg --keyserver keyserver.ubuntu.com --recv-keys B1998361219BD9C9
-gpg --export B1998361219BD9C9 | sudo tee /etc/apt/trusted.gpg.d/azul.gpg >/dev/null
+curl -fSsL https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
+#gpg --keyserver keyserver.ubuntu.com --recv-keys B1998361219BD9C9
+#gpg --export B1998361219BD9C9 | sudo tee /etc/apt/trusted.gpg.d/azul.gpg >/dev/null
 
 echo "Adding PPAs"
 
@@ -19,6 +25,8 @@ echo "Adding PPAs"
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/postgresql.asc] https://apt.postgresql.org/pub/repos/apt jammy-pgdg main" > /etc/apt/sources.list.d/pgdg.list
 
 echo "deb [signed-by=/etc/apt/trusted.gpg.d/cran_ubuntu_key.asc] https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/" > /etc/apt/sources.list.d/cran.list
+
+echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/microsoft-edge.gpg] https://packages.microsoft.com/repos/edge stable main" > /etc/apt/sources.list.d/microsoft-edge.list
 
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy main" > /etc/apt/sources.list.d/llvm.list
 echo "deb http://apt.llvm.org/jammy/ llvm-toolchain-jammy-16 main" >> /etc/apt/sources.list.d/llvm.list
@@ -51,7 +59,7 @@ echo "deb https://repo.scala-sbt.org/scalasbt/debian /" | sudo tee /etc/apt/sour
 #curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo -H gpg --no-default-keyring --keyring gnupg-ring:/etc/apt/trusted.gpg.d/scalasbt-release.gpg --import
 #chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/scalasbt-release.gpg > /dev/null
-chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
+#chmod 644 /etc/apt/trusted.gpg.d/scalasbt-release.gpg
 
 add-apt-repository -y 'deb [signed-by=/etc/apt/trusted.gpg.d/azul.gpg] https://repos.azul.com/zulu/deb stable main'
 add-apt-repository -y 'deb [arch=amd64] https://apt.getarchitect.io/jammy-snapshot/ jammy main'
