@@ -95,7 +95,11 @@ rm cuda-keyring_1.1-1_all.deb
 #julia install
 #wget https://julialang-s3.julialang.org/bin/linux/x64/1.10/julia-1.10.0-linux-x86_64.tar.gz
 #tar zxvf julia-1.10.0-linux-x86_64.tar.gz
-curl -fsSL https://install.julialang.org | sh
+#curl -fsSL https://install.julialang.org | sh
+
+curl -fsSL https://install.julialang.org -o ${HOME}/julia_install.sh
+# Use a text editor to adjust installation paths within julia_install.sh
+sh ${HOME}/julia_install.sh
 
 curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | gpg --dearmor -o /etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg
 echo 'deb [signed-by=/etc/apt/trusted.gpg.d/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
