@@ -18,6 +18,8 @@ gpg --export CA0B221CB174E585 | sudo tee /etc/apt/trusted.gpg.d/architect.gpg >/
 curl -fSsL https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
 #gpg --keyserver keyserver.ubuntu.com --recv-keys B1998361219BD9C9
 #gpg --export B1998361219BD9C9 | sudo tee /etc/apt/trusted.gpg.d/azul.gpg >/dev/null
+#codelite
+curl -fSsL http://repos.codelite.org/CodeLite.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/codelite.gpg > /dev/null
 
 echo "Adding PPAs"
 
@@ -63,6 +65,7 @@ wget -qO - "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A
 
 add-apt-repository -y 'deb [signed-by=/etc/apt/trusted.gpg.d/azul.gpg] https://repos.azul.com/zulu/deb stable main'
 add-apt-repository -y 'deb [arch=amd64] https://apt.getarchitect.io/jammy-snapshot/ jammy main'
+apt-add-repository -y 'deb [signed-by=/etc/apt/trusted.gpg.d/codelite.gpg] https://repos.codelite.org/ubuntu/ jammy universe'
 add-apt-repository -y ppa:c2d4u.team/c2d4u4.0+
 add-apt-repository -y ppa:git-core/ppa
 #add-apt-repository -y ppa:kdenlive/kdenlive
