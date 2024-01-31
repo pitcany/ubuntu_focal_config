@@ -10,10 +10,10 @@ wget -qO- https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo tee /etc/apt
 curl -fSsL https://packages.microsoft.com/keys/microsoft.asc | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft-edge.gpg > /dev/null
 #gpg --keyserver keyserver.ubuntu.com --recv-keys EB3E94ADBE1229CF
 #gpg --export EB3E94ADBE1229CF | sudo tee /etc/apt/trusted.gpg.d/microsoft-edge.gpg
-#curl -fSsL https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
+curl -fSsL https://getarchitect.io/repo-key.gpg | sudo tee /etc/apt/trusted.gpg.d/architect.gpg > /dev/null
 # not sure why this is ad-hoc but it works
-gpg --keyserver keyserver.ubuntu.com --recv-keys CA0B221CB174E585
-gpg --export CA0B221CB174E585 | sudo tee /etc/apt/trusted.gpg.d/architect.gpg >/dev/null
+#gpg --keyserver keyserver.ubuntu.com --recv-keys CA0B221CB174E585
+#gpg --export CA0B221CB174E585 | sudo tee /etc/apt/trusted.gpg.d/architect.gpg >/dev/null
 #for azul
 curl -fSsL https://repos.azul.com/azul-repo.key | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/azul.gpg > /dev/null
 #gpg --keyserver keyserver.ubuntu.com --recv-keys B1998361219BD9C9
@@ -46,7 +46,7 @@ wget -qO - https://repo.anaconda.com/pkgs/misc/gpgkeys/anaconda.asc | gpg --dear
 #install -o root -g root -m 644 conda.gpg /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg
 #rm conda.gpg
 #Check whether fingerprint is correct (will output an error message otherwise)
-gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
+#gpg --keyring /etc/apt/trusted.gpg.d/conda-archive-keyring.gpg --no-default-keyring --fingerprint 34161F5BF5EB1D4BFBBB8F0A8AEB4F8B29D82806
 
 #Add our Debian repo
 echo "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/conda-archive-keyring.gpg] https://repo.anaconda.com/pkgs/misc/debrepo/conda stable main" > /etc/apt/sources.list.d/conda.list
@@ -90,6 +90,7 @@ add-apt-repository -y ppa:ubuntu-mozilla-daily/ppa
 #add-apt-repository -y ppa:webupd8team/y-ppa-manager
 add-apt-repository -y ppa:graphics-drivers/ppa
 add-apt-repository -y ppa:ubuntuhandbook1/octave
+add-apt-repository -y ppa:apt-fast/stable
 
 wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
 dpkg -i cuda-keyring_1.1-1_all.deb
